@@ -2,18 +2,27 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, filter, tap } from 'rxjs/operators'
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { Product } from './product-interface';
 
 @Injectable()
 export class ProductService {
   productList: Product[] = [];
   product$: Observable<Product>;
-  constructor(private http: HttpClient) {}
-  
+  private dbPath = "/";
+  productsRef: AngularFireList<Product>;
+
+  constructor(private http: HttpClient, private db: AngularFireDatabase) {
+    this.productsRef= db.list(this.dbPath);
+  }
+
+
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>('assets/db.json');
   }
-  
+  getAll(): AngularFireList<Product> {
+    return this.productsRef;
+  }
   getProduct(id: string): Observable<Product> {
     this.product$ = this.http.get<Product[]>('assets/db.json').pipe(
       map(item => item.filter(x => x.sku === id)[0])
