@@ -21,24 +21,25 @@ export class ProductDetailComponent implements OnInit  {
 
     ngOnInit(){
      this.createProductForm();
-      this.getProduct(); 
+      this.getProductSKU();
     }
     get f() { return this.productForm .controls; }
 
-    getProductByID(id){
-      this.productService.getProduct(id).subscribe(
-        (data: Product) => { 
-          this.productForm.setValue(data);
-        } 
-      );
+    getProductBySKU(id): void{
+      this.productService.getBySKU(id).valueChanges()
+      .subscribe((data: Product[])=> {
+        console.log(data[0]); 
+        this.productForm.setValue(data[0]);
+      });
     }
-    getProduct(){
+    getProductSKU(){
       this.route.params.subscribe(param => {
         if(param){
-          this.getProductByID(param.id);
+         this.getProductBySKU(param.id);
         }
       })
     }
+    
     createProductForm(){
       this.productForm = this.fb.group({
         id: [''],

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Product } from '../product-interface';
-import { map } from 'rxjs/operators';
-
 
 @Component({
   selector: 'product-list',
@@ -23,20 +21,17 @@ export class ProductListComponent implements OnInit {
   getAll(): void{
     this.productService.getAll().valueChanges()
     .subscribe((data: Product[])=> {
-      console.log(data);
+      //console.log(data);
       this.productList = data;
-      //return this.productList;
     });
   }
-  getProducts() {
-    this.productService
-      .getProducts()
-      .subscribe((data: Product[]) => (this.productList = data));
-  }
-  removeProduct(id: string) {
-    let index = this.productList.findIndex((x) => x.id == id);
-    this.productList.splice(index, 1);
-    this, this.productService.deleteProduct(id);
+
+  deleteProduct(key: string):void {
+    this.productService.delete(key)
+    .then(() => {
+      console.log(key + ' Deleted');
+    })
+    .catch(err => console.log(err));
   }
   
 }
