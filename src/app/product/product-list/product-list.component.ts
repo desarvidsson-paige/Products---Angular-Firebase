@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Product } from '../product-interface';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +17,16 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     //console.log(this.productService.getProducts());
-    this.getProducts();
+   // this.getProducts();
+    this.getAll();
+  }
+  getAll(): void{
+    this.productService.getAll().valueChanges()
+    .subscribe((data: Product[])=> {
+      console.log(data);
+      this.productList = data;
+      //return this.productList;
+    });
   }
   getProducts() {
     this.productService
