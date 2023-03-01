@@ -14,14 +14,18 @@ export class ProductListComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
-    //console.log(this.productService.getProducts());
-   // this.getProducts();
     this.getAll();
   }
-  getAll(): void{
-    this.productService.getAll().valueChanges()
+  getAllNoKey(): void{
+    this.productService.getAllNoKey().valueChanges()
     .subscribe((data: Product[])=> {
       //console.log(data);
+      this.productList = data;
+    });
+  }
+  getAll(): void{
+    this.productService.getAll()
+    .subscribe((data: Product[])=> {
       this.productList = data;
     });
   }
@@ -29,7 +33,7 @@ export class ProductListComponent implements OnInit {
   deleteProduct(key: string):void {
     this.productService.delete(key)
     .then(() => {
-      console.log(key + ' Deleted');
+      console.log('Key: '+key + ' Deleted');
     })
     .catch(err => console.log(err));
   }

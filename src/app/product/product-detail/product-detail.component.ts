@@ -28,7 +28,8 @@ export class ProductDetailComponent implements OnInit  {
     getProductBySKU(id): void{
       this.productService.getBySKU(id).valueChanges()
       .subscribe((data: Product[])=> {
-        console.log(data[0]); 
+        console.log(data[0]);
+        console.log(data); 
         this.productForm.setValue(data[0]);
       });
     }
