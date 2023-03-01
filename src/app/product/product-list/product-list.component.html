@@ -1,0 +1,51 @@
+<div class="container p-4">
+  
+  <div class="row border border-light p-2 mb-2">
+    <div class="col">
+      <input class="my-3 p-2 border fs-5" type="text" style="max-width:200px;" placeholder="Filter by color" [(ngModel)]="color" >
+    </div>
+    
+  </div>
+  <ul class="p-0" *ngIf="productList.length > 0">
+    <li
+      class="row border border-light p-2 mb-2"
+      *ngFor="
+        let product of productList
+         | colorfilter: color | paginate: { itemsPerPage: 10, currentPage: pageNumber }
+      "
+    >
+      <div class="col-12 fs-4 py-2">{{ product.name }}</div>
+
+      <div class="col-sm-3">
+        <div><span class="fst-italic">color:</span> {{ product.color }}</div>
+        <div><span class="fst-italic">type:</span> {{ product.type }}</div>
+      </div>
+      <div class="col-sm-3 py-1 fs-5 fw-bolder">
+        {{ product.price | currency }}
+      </div>
+      <div class="col-3">
+        <a
+          role="button"
+          class="text-decoration-none btn bg-light w-100"
+          [routerLink]="['/product-detail', product.sku]"
+          >Edit
+        </a>
+      </div>
+      <div class="col-3">
+        <button
+          role="button"
+          class="text-decoration-none btn bg-light w-100"
+          (click)="removeProduct(product.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  </ul>
+  <div class="row">
+    <pagination-controls
+      (pageChange)="pageNumber = $event"
+      class="text-center"
+    ></pagination-controls>
+  </div>
+</div>

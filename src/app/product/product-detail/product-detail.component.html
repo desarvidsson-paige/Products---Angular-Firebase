@@ -1,0 +1,78 @@
+<div class="container">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="border border-light p-4 mb-2">
+    <div class="row p-2">
+      <label class="ps-0" for="name">Name: </label>
+      <input
+        class="p-2 border text-black-50"
+        type="text"
+        formControlName="name"
+        maxlength="55"
+        [ngClass]="{ 'is-invalid': f.name.errors?.['required'] }"
+        required
+      />
+      <div class="ps-0 text-danger" *ngIf="f.name.errors?.['required']">
+        Name is required.
+      </div>
+    </div>
+    <div class="row p-2">
+      <label class="ps-0" for="description">Description: </label>
+      <textarea
+        class="p-2 border text-black-50"
+        type="text"
+        formControlName="description"
+      ></textarea>
+      <div class="ps-0 text-danger" *ngIf="f.description.errors?.['required']">
+        Description is required.
+      </div>
+    </div>
+    <div class="row p-2">
+      <label class="ps-0" for="type">Type: </label>
+      <input
+        class="p-2 border text-black-50"
+        type="text"
+        formControlName="type"
+        maxlength="55"
+        required
+      />
+      <div class="ps-0 text-danger" *ngIf="f.type.errors?.['required']">
+        Type is required.
+      </div>
+    </div>
+    <div class="row p-2">
+      <label class="ps-0" for="color">Color: </label>
+      <input
+        class="p-2 border text-black-50"
+        type="text"
+        formControlName="color" maxlength="55"
+        required
+      />
+      <div class="ps-0 text-danger" *ngIf="f.color.errors?.['required']">
+        Color is required.
+      </div>
+    </div>
+    <div class="row p-2">
+      <label class="ps-0" for="price">Price: </label>
+      <input
+        class="p-2 border text-black-50"
+        type="text"
+        formControlName="price"
+        maxlength="7"
+      
+      />
+      <div class="ps-0 text-danger" *ngIf="f.price.errors?.['pattern']">
+        Price is invalid.
+      </div>
+    </div>
+    <div class="row">
+      <div class="col p-2">
+        <input class="p-3 border bg-primary-subtle w-100" type="submit" />
+      </div>
+      <div class="col p-2">
+        <button class="p-3 border" [routerLink]="['/product-list']">
+          Cancel
+        </button>
+      </div>
+    </div>
+    
+  </form>
+</div>
