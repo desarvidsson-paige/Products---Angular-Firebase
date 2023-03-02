@@ -64,19 +64,7 @@ export class ProductService {
       .pipe(map((item) => item.filter((x) => x.sku === id)[0]));
     return this.product$;
   }
-  getProductBySKU(sku) {
-    let product: Product;
-
-    this.getProducts().subscribe((data: Product[]) => {
-      this.productList = data;
-      this.productList.map((item) => {
-        if (item.sku == sku) product = item;
-      });
-      //console.log(product);
-    });
-
-    return product;
-  }
+  
   updateProduct(item) {
     let selected: Boolean = false;
     this.productList.map((val, index) => {

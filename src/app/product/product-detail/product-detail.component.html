@@ -1,5 +1,6 @@
 <div class="container">
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="border border-light p-4 mb-2">
+ 
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="f.sku.value" class="border border-light p-4 mb-2">
     <div class="row p-2">
       <label class="ps-0" for="name">Name: </label>
       <input

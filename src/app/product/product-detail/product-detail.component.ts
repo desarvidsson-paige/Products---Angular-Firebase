@@ -36,8 +36,11 @@ export class ProductDetailComponent implements OnInit  {
     getProduct(id): void{
       this.productService.getBySKU(id)
       .subscribe((data: Product[])=> {
+        console.log(this.productForm);
+        if(data[0]){
         console.log(data[0]);
         this.productForm.setValue(data[0]);
+        }
         //console.log(this.productForm.value);
       });
     }
