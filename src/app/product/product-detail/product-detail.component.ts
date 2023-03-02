@@ -23,20 +23,35 @@ export class ProductDetailComponent implements OnInit  {
      this.createProductForm();
       this.getProductSKU();
     }
-    get f() { return this.productForm .controls; }
+    get f() { return this.productForm.controls; }
 
-    getProductBySKU(id): void{
-      this.productService.getBySKU(id).valueChanges()
+    getProductNoKey(id): void{
+      this.productService.getBySKUNoKey(id).valueChanges()
       .subscribe((data: Product[])=> {
         console.log(data[0]);
-        console.log(data); 
         this.productForm.setValue(data[0]);
+        //console.log(this.productForm.value);
+      });
+    }
+    getProduct(id): void{
+      this.productService.getBySKU(id)
+      .subscribe((data: Product[])=> {
+        console.log(data[0]);
+        this.productForm.setValue(data[0]);
+        //console.log(this.productForm.value);
       });
     }
     getProductSKU(){
       this.route.params.subscribe(param => {
         if(param){
-         this.getProductBySKU(param.id);
+         this.getProduct(param.id);
+        }
+      })
+    }
+    getProductSKUNoKey(){
+      this.route.params.subscribe(param => {
+        if(param){
+         this.getProductNoKey(param.id);
         }
       })
     }
@@ -45,6 +60,7 @@ export class ProductDetailComponent implements OnInit  {
       this.productForm = this.fb.group({
         id: [''],
         sku: [''],
+        key: [''],
         name: ['', Validators.required],
         type: ['',Validators.required],
         description: ['', Validators.required],
@@ -59,9 +75,13 @@ export class ProductDetailComponent implements OnInit  {
       if (this.productForm.invalid) {
           return;
       }
-
-      // display form values on success
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.productForm.value, null, 4));
-  }
-    
-}
+      this.update(this.productForm.get('key').value, this.productForm.value)
+    }
+    update(key: string, value: Product): void {
+        this.productService.update(key, value)
+        .then(() => {
+        console.log(`Key: ${key} updated.`);
+        })
+        .catch(err => console.log(err));
+      }
+    }

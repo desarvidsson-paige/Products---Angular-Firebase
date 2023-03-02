@@ -19,8 +19,7 @@ export class ProductService {
   items: Observable<any[]>;
 
   constructor(private http: HttpClient, private db: AngularFireDatabase) {
-    this.productsRef = db.list(this.dbPath);
-    
+    this.productsRef = db.list(this.dbPath);  
   }
 
   getProducts(): Observable<Product[]> {
@@ -44,14 +43,20 @@ export class ProductService {
     const getPath = `${this.dbPath}/${key}`;
     return this.db.object(getPath);
   }
-  getBySKU(key: string) {
-    return this.db.list('/', (ref) => ref.orderByChild('sku').equalTo(key));
+  getBySKUNoKey(sku: string) {
+    return this.db.list('/', (ref) => ref.orderByChild('sku').equalTo(sku));
+  }
+  getBySKU(sku: string): Observable<any> {
+    return this.db.list('/', (ref) => ref.orderByChild('sku').equalTo(sku)).snapshotChanges().pipe(map((changes) =>
+    changes.map((c) => ({ key: c.key, ...c.payload.val() as Product}))
+  ));
+
   }
   delete(key: string): Promise<void> {
     return this.productsRef.remove(key);
   }
   update(key: string, value: any): Promise<void> {
-    return this.productsRef.set(value, value);
+    return this.productsRef.update(key, value);
   }
   getProduct(id: string): Observable<Product> {
     this.product$ = this.http
