@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Product} from '../product-interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute , Router} from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 
 @Component({
@@ -16,7 +16,8 @@ export class ProductDetailComponent implements OnInit  {
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private rt: Router
   ){}
 
     ngOnInit(){
@@ -78,7 +79,8 @@ export class ProductDetailComponent implements OnInit  {
       if (this.productForm.invalid) {
           return;
       }
-      this.update(this.productForm.get('key').value, this.productForm.value)
+      this.update(this.productForm.get('key').value, this.productForm.value);
+      this.rt.navigateByUrl('/product-list');
     }
     update(key: string, value: Product): void {
         this.productService.update(key, value)
